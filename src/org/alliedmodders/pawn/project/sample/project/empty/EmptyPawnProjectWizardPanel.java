@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.alliedmodders.pawn.project.sample.project.empty;
 
 import java.awt.Component;
@@ -13,6 +18,7 @@ import org.openide.util.NbBundle;
 /**
  * Panel just asking for basic info.
  */
+@SuppressWarnings("rawtypes")
 public class EmptyPawnProjectWizardPanel implements WizardDescriptor.Panel,
         WizardDescriptor.ValidatingPanel, WizardDescriptor.FinishablePanel {
 
@@ -31,7 +37,7 @@ public class EmptyPawnProjectWizardPanel implements WizardDescriptor.Panel,
     }
 
     public HelpCtx getHelp() {
-        return new HelpCtx(EmptyPawnProjectWizardPanel.class);
+        return new HelpCtx("org.alliedmodders.pawn.project.sample.project.empty.EmptyPawnProjectWizardPanel");
     }
 
     public boolean isValid() {

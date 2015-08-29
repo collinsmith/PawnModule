@@ -16,9 +16,9 @@ public class PawnLanguage extends DefaultLanguageConfig {
     public String getDisplayName() {
 	return "Pawn";
     }
-
-    /*@Override
-    public Parser getParser() {
-	return new PawnParser();
-    }*/
+    
+//    @Override
+//    public Parser getParser() {
+//	return new PawnParser();
+//    }
 }

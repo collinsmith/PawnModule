@@ -32,8 +32,6 @@ public class PawnDocLexer extends AbstractPawnLexer<PawnDocTokenId> {
             return null;
         }
         
-        System.err.println(state);
-        
         switch (ch) {
             case '@':
                 if (state == null) {

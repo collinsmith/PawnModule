@@ -54,8 +54,6 @@ public class PawnParser {
 
 PARSER_END(PawnParser)
 
-
-
 /*****************************************
  * THE PAWN LANGUAGE GRAMMAR STARTS HERE *
  *****************************************/

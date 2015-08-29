@@ -79,8 +79,9 @@
                default="pawn-doc-identifier"/>
     
     <fontcolor name="html-tag"
-               default="comment">
-        <font style="italic"/>
+               default="comment"
+               foreColor="9999FF">
+        <font style="bold+italic"/>
     </fontcolor>
     
     <fontcolor name="pawn-doc-hash"

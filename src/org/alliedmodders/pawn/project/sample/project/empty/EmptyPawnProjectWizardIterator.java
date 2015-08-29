@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package org.alliedmodders.pawn.project.sample.project.empty;
 
 import java.awt.Component;
@@ -33,8 +38,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 // TODO define position attribute
-
+@TemplateRegistration(folder = "Project/Pawn", displayName = "#EmptyPawnProject_displayName", description = "EmptyPawnProjectDescription.html", iconBase = "org/alliedmodders/pawn/project/sample/project/empty/EmptyPawnProject.png", content = "EmptyPawnProjectProject.zip")
 @Messages("EmptyPawnProject_displayName=Empty Pawn Project")
+@SuppressWarnings("rawtypes")
 public class EmptyPawnProjectWizardIterator implements WizardDescriptor./*Progress*/InstantiatingIterator {
 
     private int index;
