@@ -127,14 +127,16 @@ public class PawnDocLexer extends AbstractPawnLexer<PawnDocTokenId> {
                     }
                     
                     if (state == NextIdentifierLexerState.PARAM) {
-                        if (ch == '.'
-                         && (ch = nextChar()) == '.'
-                         && (ch = nextChar()) == '.') {
-                            return token(PawnDocTokenId.IDENTIFIER);
-                        } else if (ch == '%') {
-                            while (Character.isDigit(nextChar())) {};
-                            backup(1);
-                            return token(PawnDocTokenId.IDENTIFIER);
+                        switch (ch) {
+                            case '.':
+                                if ((ch = nextChar()) == '.'
+                                 && (ch = nextChar()) == '.')
+                                    return token(PawnDocTokenId.IDENTIFIER);
+                                break;
+                            case '%':
+                                while (Character.isDigit(nextChar())) {};
+                                backup(1);
+                                return token(PawnDocTokenId.IDENTIFIER);
                         }
                     }
                     
@@ -236,7 +238,7 @@ public class PawnDocLexer extends AbstractPawnLexer<PawnDocTokenId> {
     
     private void finishWord(int ch) {
         while (true) {
-            if (ch == EOF || Character.isWhitespace(ch)) {
+            if (ch == EOF || Character.isWhitespace(ch) || ch == '}') {
                 backup(1);
                 return;
             }

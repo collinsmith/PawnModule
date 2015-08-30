@@ -17,6 +17,8 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
 import org.openide.awt.DynamicMenuContent;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.util.NbBundle;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.IOProvider;
 import org.openide.windows.InputOutput;
@@ -69,6 +71,7 @@ public final class BuildProjectAction extends AbstractAction {
 	String fileName = context.getName();
 	String projectPath = project.getProjectDirectory().getPath();
 	String buildPath = String.format("%s/build/%s.amxx", projectPath, fileName);
+        //String defaultInclude = FileUtil.normalizePath("src/org/alliedmodders/pawn/file/pawn/default.inc");
 	
 	io.getOut().println("------------------------------------------------");
 	io.getOut().printf("Building '%s' . . .%n", context.getPath());
@@ -77,6 +80,10 @@ public final class BuildProjectAction extends AbstractAction {
 	    String[] cmd = {
 		compilerPath,
 		String.format("\"%s\"", context.getPath()),
+		"-\\",
+                "-;",
+		//"-h",
+                //String.format("-p\"%s\"", defaultInclude),
 		String.format("-o\"%s\"", buildPath),
 		String.format("-i\"%s/src\"", projectPath),
 	    };

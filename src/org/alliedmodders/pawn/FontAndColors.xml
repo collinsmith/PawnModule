@@ -92,11 +92,15 @@
 <!-- Pawn Preprocessor Directives -->
     <fontcolor name="preprocessor-directive"
                default="preprocessor-directive"
-               foreColor="FF77FF"/>
+               foreColor="FF77FF">
+        <font style="bold"/>
+    </fontcolor>
     
     <fontcolor name="preprocessor-error"
                default="preprocessor-directive"
-               waveUnderlined="red"/>
+               waveUnderlined="red">
+        <font style="plain"/>
+    </fontcolor>
     
     <fontcolor name="preprocessor-identifier"
                default="preprocessor-directive">
