@@ -390,8 +390,8 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                              && (ch = nextChar()) == 't')
                                 return keywordIdentifierOrTag(PawnTokenId.DEFAULT);
                             break;
-                        default:
-                            return keywordIdentifierOrTag(PawnTokenId.DO, ch);
+                        case 'o':
+                            return keywordIdentifierOrTag(PawnTokenId.DO);
                     }
                     return finishIdentifierOrTag(ch);
 
