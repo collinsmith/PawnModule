@@ -35,10 +35,8 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                     while (true) {
                         switch (nextChar()) {
                             case '\\':
-                                if (nextChar() == '\r') {
-                                    consumeNewline();
-                                }
-                                
+                                while (Character.isWhitespace(nextChar())) {};
+                                backup(1);
                                 break;
                             case '\r': consumeNewline();
                             case '\n':
@@ -57,7 +55,7 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                             case '"':
                                 return token(lookupId);
                             case '\\':
-                                nextChar();
+                                while (Character.isWhitespace(nextChar())) {};
                                 break;
                             case '\r': consumeNewline();
                             case '\n':
@@ -73,7 +71,7 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                             case '\'':
                                 return token(PawnTokenId.CHAR_LITERAL);
                             case '\\':
-                                nextChar();
+                                while (Character.isWhitespace(nextChar())) {};
                                 break;
                             case '\r': consumeNewline();
                             case '\n':

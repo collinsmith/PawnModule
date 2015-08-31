@@ -739,13 +739,16 @@ public class PawnPreprocessorLexer extends AbstractPawnLexer<PawnPreprocessorTok
             case 'Z':
                 return finishIdentifierOrTag();
             case '\\':
-                switch (nextChar()) {
+                while (Character.isWhitespace(ch = nextChar())) {};
+                backup(1);
+                return token(PawnPreprocessorTokenId.LINE_CONCATENATION);
+                /*switch (nextChar()) {
                     case '\r': consumeNewline();
                     case '\n':
                         return token(PawnPreprocessorTokenId.LINE_CONCATENATION);
                 }
                 
-                return token(PawnPreprocessorTokenId.LEXICAL_ERROR);
+                return token(PawnPreprocessorTokenId.LEXICAL_ERROR);*/
             case '\t':
             case '\n':
             case '\f':

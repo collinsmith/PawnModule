@@ -112,8 +112,15 @@ public class PawnStringLiteralLexer<T extends TokenId> extends AbstractPawnLexer
                         backup(1);
                         return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.TEXT : PawnCharacterLiteralTokenId.TEXT, readLength());
                     }
+                    
+                    ch = nextChar();
+                    if (Character.isWhitespace(ch)) {
+                        while (Character.isWhitespace(nextChar())) {};
+                        backup(1);
+                        return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.LINE_CONCATENATION : PawnCharacterLiteralTokenId.LINE_CONCATENATION);
+                    }
                 
-                    switch (ch = nextChar()) {
+                    switch (ch) {
                         case 'b':   return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.BACKSPACE : PawnCharacterLiteralTokenId.BACKSPACE);
                         case 'f':   return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.FORM_FEED : PawnCharacterLiteralTokenId.FORM_FEED);
                         case 'n':   return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.NEWLINE : PawnCharacterLiteralTokenId.NEWLINE);
@@ -187,9 +194,9 @@ public class PawnStringLiteralLexer<T extends TokenId> extends AbstractPawnLexer
                         
                             backup(1);
                             return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.DECIMAL_ESCAPE : PawnCharacterLiteralTokenId.DECIMAL_ESCAPE);
-                        case '\r': consumeNewline();
-                        case '\n':
-                            return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.LINE_CONCATENATION : PawnCharacterLiteralTokenId.LINE_CONCATENATION);
+                        //case '\r': consumeNewline();
+                        //case '\n':
+                        //    return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.LINE_CONCATENATION : PawnCharacterLiteralTokenId.LINE_CONCATENATION);
                     }
                 
                     backup(1);
