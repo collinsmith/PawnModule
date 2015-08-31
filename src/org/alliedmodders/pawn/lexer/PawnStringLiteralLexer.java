@@ -54,7 +54,9 @@ public class PawnStringLiteralLexer<T extends TokenId> extends AbstractPawnLexer
                     }
                 
                     PercentEscapeLexerState state = PercentEscapeLexerState.LOOKING_FOR_LEFT_JUSTIFY;
+                    int i = -1;
                     while (true) {
+                        i++;
                         switch (ch = nextChar()) {
                             case '%':
                                 return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.PERCENT_ESCAPE : PawnCharacterLiteralTokenId.PERCENT_ESCAPE, readLength());
@@ -103,6 +105,11 @@ public class PawnStringLiteralLexer<T extends TokenId> extends AbstractPawnLexer
                             case 'N':
                                 return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.PERCENT_ESCAPE : PawnCharacterLiteralTokenId.PERCENT_ESCAPE, readLength());
                             default:
+                                if (i == 0) {
+                                    backup(1);
+                                    return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.TEXT : PawnCharacterLiteralTokenId.TEXT);
+                                }
+                                
                                 return token(isStringLiteralTokenId() ? PawnStringLiteralTokenId.PERCENT_ESCAPE_INVALID : PawnCharacterLiteralTokenId.PERCENT_ESCAPE_INVALID);
                         }
                     }
