@@ -42,6 +42,7 @@ public enum PawnTokenId implements TokenId {
     PUBLIC("public", "keyword"),
     RETURN("return", "keyword-directive"),
     SIZEOF("sizeof", "keyword-directive"),
+    STATE("state", "keyword-directive"),
     STATIC("static", "keyword"),
     STOCK("stock", "keyword"),
     SWITCH("switch", "keyword-directive"),

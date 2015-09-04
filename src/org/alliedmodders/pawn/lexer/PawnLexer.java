@@ -505,10 +505,16 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                         case 't':
                             switch (ch = nextChar()) {
                                 case 'a':
-                                    if ((ch = nextChar()) == 't'
-                                     && (ch = nextChar()) == 'i'
-                                     && (ch = nextChar()) == 'c')
-                                        return keywordIdentifierOrTag(PawnTokenId.STATIC);
+                                    if ((ch = nextChar()) == 't') {
+                                        switch (ch = nextChar()) {
+                                            case 'e':
+                                                return keywordIdentifierOrTag(PawnTokenId.STATE);
+                                            case 'i':
+                                                if ((ch = nextChar()) == 'c')
+                                                    return keywordIdentifierOrTag(PawnTokenId.STATIC);
+                                        }
+                                    }
+                                    
                                     break;
                                 case 'o':
                                     if ((ch = nextChar()) == 'c'
@@ -573,6 +579,7 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                 case 'L': case 'M': case 'N': case 'O': case 'P':
                 case 'Q': case 'R': case 'S': case 'T': case 'U':
                 case 'V': case 'W': case 'X': case 'Y': case 'Z':
+                case '@':
                     return finishIdentifierOrTag();
                     
                 // All Character.isWhitespace(c) below 0x80 follow
