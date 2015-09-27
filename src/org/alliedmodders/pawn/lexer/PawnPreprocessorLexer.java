@@ -71,7 +71,7 @@ public class PawnPreprocessorLexer extends AbstractPawnLexer<PawnPreprocessorTok
                 return token(PawnPreprocessorTokenId.GT);
 
             case '<':
-                if (state == PawnPreprocessorTokenId.INCLUDE) {
+                if (state == PawnPreprocessorTokenId.INCLUDE || state == PawnPreprocessorTokenId.TRYINCLUDE) {
                     while (true) {
                         ch = nextChar();
                         if (ch == EOF || Character.isWhitespace(ch)) {
