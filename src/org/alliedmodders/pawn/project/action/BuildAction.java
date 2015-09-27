@@ -49,6 +49,9 @@ public final class BuildAction implements ActionListener {
 	String filePath = context.getPrimaryFile().getPath();
 	String fileDir = context.getFolder().getPrimaryFile().getPath();
 	String buildPath = String.format("%s/../build/%s.amxx", fileDir, fileName);
+        if (!Files.isDirectory(Paths.get(buildPath))) {
+            buildPath = String.format("%s/build/%s.amxx", fileDir, fileName);
+        }
         //String defaultInclude = FileUtil.normalizePath("src/org/alliedmodders/pawn/file/pawn/default.inc");
 	
 	io.getOut().println("------------------------------------------------");
