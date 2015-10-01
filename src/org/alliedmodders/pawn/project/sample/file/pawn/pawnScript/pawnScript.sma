@@ -10,6 +10,14 @@ static const PLUGIN_NAME[] = "${name}";
 static const PLUGIN_AUTHOR[] = "${user}";
 static const PLUGIN_VERSION[] = "0.0.1";
 
+public plugin_precache() {
+    //...
+}
+
+public plugin_natives() {
+    //...
+}
+
 public plugin_init() {
     register_plugin(PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_AUTHOR);
 
@@ -17,13 +25,5 @@ public plugin_init() {
 }
 
 public plugin_cfg() {
-    //...
-}
-
-public plugin_precache() {
-    //...
-}
-
-public plugin_natives() {
     //...
 }
