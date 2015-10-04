@@ -1,5 +1,6 @@
 package org.alliedmodders.pawn.lexer;
 
+import org.netbeans.api.lexer.PartType;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenId;
 import org.netbeans.spi.lexer.Lexer;
@@ -19,7 +20,7 @@ public abstract class AbstractPawnLexer<T extends TokenId> implements Lexer<T> {
         this.input = info.input();
         this.tokenFactory = info.tokenFactory();
     }
-    
+
     protected int currentLength() {
         return currentLength;
     }
@@ -43,11 +44,19 @@ public abstract class AbstractPawnLexer<T extends TokenId> implements Lexer<T> {
         }
     }
     
+    protected TokenFactory<T> getTokenFactory() {
+        return tokenFactory;
+    }
+    
     protected Token<T> token(T tokenId) {
         return tokenFactory.createToken(tokenId);
     }
     
     protected Token<T> token(T tokenId, int length) {
         return tokenFactory.createToken(tokenId, length);
+    }
+    
+    protected Token<T> token(T tokenId, int length, PartType partType) {
+        return tokenFactory.createToken(tokenId, length, partType);
     }
 }

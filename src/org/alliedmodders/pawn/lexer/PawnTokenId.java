@@ -22,6 +22,7 @@ public enum PawnTokenId implements TokenId {
     
     IDENTIFIER(null, "identifier"),
     TAG(null, "tag"),
+    LABEL(null, "label"),
     
     ASSERT("assert", "keyword"),
     BREAK("break", "keyword-directive"),

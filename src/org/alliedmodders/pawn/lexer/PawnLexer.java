@@ -5,23 +5,21 @@ import org.netbeans.api.lexer.PartType;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.spi.lexer.LexerInput;
 import org.netbeans.spi.lexer.LexerRestartInfo;
-import org.netbeans.spi.lexer.TokenFactory;
 
 public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
     
     private static final int EOF = LexerInput.EOF;
     
-    private final TokenFactory<PawnTokenId> tokenFactory;
-        
+    private Boolean state;
+    
     public PawnLexer(LexerRestartInfo<PawnTokenId> info) {
         super(info);
-        this.tokenFactory = info.tokenFactory();
-        assert (info.state() == null); // never set to non-null value in state()
+        this.state = (Boolean)info.state();
     }
 
     @Override
     public Object state() {
-        return null; // always in default state after token recognition
+        return state;
     }
     
     @Override
@@ -41,7 +39,7 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                             case '\r': consumeNewline();
                             case '\n':
                             case EOF:
-                                return tokenFactory.createToken(PawnTokenId.PREPROCESSOR_DIRECTIVE,
+                                return token(PawnTokenId.PREPROCESSOR_DIRECTIVE,
                                         readLength(), PartType.START);
                         }
                     }
@@ -61,7 +59,7 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                             case '\n':
                             case EOF:
                                 // TODO: return EOL token
-                                return tokenFactory.createToken(lookupId,
+                                return token(lookupId,
                                         readLength(), PartType.START);
                         }
                     }
@@ -77,7 +75,7 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                             case '\n':
                             case EOF:
                                 // TODO: return EOL token
-                                return tokenFactory.createToken(PawnTokenId.CHAR_LITERAL,
+                                return token(PawnTokenId.CHAR_LITERAL,
                                         readLength(), PartType.START);
                         }
                     }
@@ -108,13 +106,13 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                                         if (ch == '/') {
                                             return token(PawnTokenId.DOC_COMMENT);
                                         } else if (ch == EOF) {
-                                            return tokenFactory.createToken(PawnTokenId.DOC_COMMENT,
+                                            return token(PawnTokenId.DOC_COMMENT,
                                                     readLength(), PartType.START);
                                         }
                                     }
                                     
                                     if (ch == EOF) {
-                                        return tokenFactory.createToken(PawnTokenId.DOC_COMMENT,
+                                        return token(PawnTokenId.DOC_COMMENT,
                                                 readLength(), PartType.START);
                                     }
                                     
@@ -129,13 +127,13 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                                         if (ch == '/') {
                                             return token(PawnTokenId.BLOCK_COMMENT);
                                         } else if (ch == EOF) {
-                                            return tokenFactory.createToken(PawnTokenId.BLOCK_COMMENT,
+                                            return token(PawnTokenId.BLOCK_COMMENT,
                                                     readLength(), PartType.START);
                                         }
                                     }
                                     
                                     if (ch == EOF) {
-                                        return tokenFactory.createToken(PawnTokenId.BLOCK_COMMENT,
+                                        return token(PawnTokenId.BLOCK_COMMENT,
                                                 readLength(), PartType.START);
                                     }
                                 }
@@ -355,8 +353,11 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                     switch (ch = nextChar()) {
                         case 'a':
                             if ((ch = nextChar()) == 's'
-                             && (ch = nextChar()) == 'e')
+                             && (ch = nextChar()) == 'e') {
+                                this.state = Boolean.TRUE;
                                 return keywordIdentifierOrTag(PawnTokenId.CASE);
+                            }
+                            
                             break;
                         case 'o':
                             if ((ch = nextChar()) == 'n') {
@@ -598,8 +599,8 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                     if (ch == EOF || !Character.isWhitespace(ch)) { // Return single space as flyweight token
                         backup(1);
                         return   readLength() == 1
-                               ? tokenFactory.getFlyweightToken(PawnTokenId.WHITESPACE, " ")
-                               : tokenFactory.createToken(PawnTokenId.WHITESPACE);
+                               ? getTokenFactory().getFlyweightToken(PawnTokenId.WHITESPACE, " ")
+                               : token(PawnTokenId.WHITESPACE);
                     }
                     return finishWhitespace();
 
@@ -625,7 +626,7 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
             int ch = nextChar();
             if (ch == EOF || !Character.isWhitespace(ch)) {
                 backup(1);
-                return tokenFactory.createToken(PawnTokenId.WHITESPACE);
+                return token(PawnTokenId.WHITESPACE);
             }
         }
     }
@@ -638,10 +639,15 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
         while (true) {
             if (ch == EOF || !Pawn.isPawnIdentifierPart(ch)) {
                 if (ch == ':') {
-                    return tokenFactory.createToken(PawnTokenId.TAG);
+                    if (this.state != null && this.state.compareTo(Boolean.TRUE) == 0) {
+                        this.state = Boolean.FALSE;
+                        return token(PawnTokenId.LABEL);
+                    }
+                    
+                    return token(PawnTokenId.TAG);
                 } else {
                     backup(1);
-                    return tokenFactory.createToken(PawnTokenId.IDENTIFIER);
+                    return token(PawnTokenId.IDENTIFIER);
                 }
             }
             ch = nextChar();
@@ -719,8 +725,8 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
     protected Token<PawnTokenId> token(PawnTokenId id) {
         String fixedText = id.fixedText();
         return (fixedText != null && fixedText.length() == readLength())
-                ? tokenFactory.getFlyweightToken(id, fixedText)
-                : tokenFactory.createToken(id);
+                ? getTokenFactory().getFlyweightToken(id, fixedText)
+                : super.token(id);
     }
 
     @Override
