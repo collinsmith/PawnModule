@@ -10,16 +10,14 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
     
     private static final int EOF = LexerInput.EOF;
     
-    private Boolean state;
-    
     public PawnLexer(LexerRestartInfo<PawnTokenId> info) {
         super(info);
-        this.state = (Boolean)info.state();
+        assert (info.state() == null);
     }
 
     @Override
     public Object state() {
-        return state;
+        return null;
     }
     
     @Override
@@ -354,7 +352,6 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
                         case 'a':
                             if ((ch = nextChar()) == 's'
                              && (ch = nextChar()) == 'e') {
-                                this.state = Boolean.TRUE;
                                 return keywordIdentifierOrTag(PawnTokenId.CASE);
                             }
                             
@@ -639,11 +636,6 @@ public class PawnLexer extends AbstractPawnLexer<PawnTokenId> {
         while (true) {
             if (ch == EOF || !Pawn.isPawnIdentifierPart(ch)) {
                 if (ch == ':') {
-                    if (this.state != null && this.state.compareTo(Boolean.TRUE) == 0) {
-                        this.state = Boolean.FALSE;
-                        return token(PawnTokenId.LABEL);
-                    }
-                    
                     return token(PawnTokenId.TAG);
                 } else {
                     backup(1);

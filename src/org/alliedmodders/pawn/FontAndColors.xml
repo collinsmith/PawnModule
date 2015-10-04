@@ -10,6 +10,9 @@
     <fontcolor name="identifier"
                default="identifier"/>
     
+    <fontcolor name="label"
+               default="label"/>
+    
     <fontcolor name="tag"
                default="tag"
                foreColor="1B8B7D">
